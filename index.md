@@ -1,37 +1,81 @@
-## Welcome to GitHub Pages
+# Parallel Hadd
+This is a python package to allow usage of hadd (from ROOT CERN) in parallel. It allows adding histogram and `.root` files. The addition will occur in blocks instead of one at all. It was designed to work with limited memory (local development primilary). The addition will use `multiprocessing` if avilable in your python enviroment. 
 
-You can use the [editor on GitHub](https://github.com/MohamedElashri/hadd-parallel/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Requirements:
+The minimum supported python version is 3.6 and 3.7 and 3.8 are tested. Not tested on python 3.9 yet. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+## Install 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## from pypi
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+you can install the package directly from pypi repository
+```
+pip install parallel-hadd
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+## build manually
+1. clone this repository
 
-### Jekyll Themes
+```
+git clone https://github.com/MohamedElashri/hadd-parallel
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/MohamedElashri/hadd-parallel/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+2. build the package from source using `pip`
 
-### Support or Contact
+```
+pip3 install ./hadd-parallel
+```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## Manual
+
+The command to use the package is 
+
+```
+phadd
+```
+
+you can use it as the following (with default arguments)
+
+```
+phadd out.root *.root
+```
+
+where `out.root` will be the output file the contains all the `*.root` files. 
+
+more information about how to customize the settings are available on program help page
+
+```
+phadd -h
+```
+
+
+## Help page
+
+```
+usage: phadd [-h] [-t TMPDIR] [-j NUM_JOBS] [-n NUM_FILES] [-f] [-s] [-l {DEBUG,INFO,WARNING,ERROR,CRITICAL}] [-v]
+             output_file input_files [input_files ...]
+
+Hadd ROOT histograms in parallel
+
+positional arguments:
+  output_file           the output file
+  input_files           one or more input files
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t TMPDIR, --tmpdir TMPDIR
+                        the temporary directory to store intermediate files
+  -j NUM_JOBS, --jobs NUM_JOBS
+                        the number of jobs to run in parallel , [default cpu_count * 2 = {N_JOBS}
+  -n NUM_FILES, --num_files NUM_FILES
+                        the number of files to hadd at once
+  -f, --force_overwrite
+                        force overwrite of output file
+  -s, --save-tmp        save the intermediate files, otherwise they will be deleted (which is the default)
+  -l {DEBUG,INFO,WARNING,ERROR,CRITICAL}, --log {DEBUG,INFO,WARNING,ERROR,CRITICAL}
+                        the log level, [default Warning]
+  -v, --version         show program's version number and exit
+
+```
+
