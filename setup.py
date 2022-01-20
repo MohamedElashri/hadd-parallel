@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from importlib.metadata import entry_points
 import re
 from setuptools import setup
 
