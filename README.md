@@ -7,6 +7,14 @@ The minimum supported python version is 3.6 and 3.7 and 3.8 are tested. Not test
 
 ## Install 
 
+## from pypi
+
+you can install the package directly from pypi repository
+```
+pip install parallel-hadd
+```
+
+## build manually
 1. clone this repository
 
 ```
