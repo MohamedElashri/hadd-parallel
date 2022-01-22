@@ -43,6 +43,8 @@ you can use it as the following (with default arguments)
 phadd out.root *.root
 ```
 
+[![asciicast](https://asciinema.org/a/GdfRIzl5uF8OQ1GrMwAhg8qXt.svg)](https://asciinema.org/a/GdfRIzl5uF8OQ1GrMwAhg8qXt)
+
 where `out.root` will be the output file the contains all the `*.root` files. 
 
 more information about how to customize the settings are available on program help page
