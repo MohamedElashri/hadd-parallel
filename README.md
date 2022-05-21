@@ -4,7 +4,17 @@
 This is a python package to allow usage of hadd (from ROOT CERN) in parallel. It allows adding histogram and `.root` files. The addition will occur in blocks instead of one at all. It was designed to work with limited memory (local development primilary). The addition will use `multiprocessing` if avilable in your python enviroment. 
 
 ## Requirements:
-The minimum supported python version is 3.6 and 3.7 and 3.8 are tested. Not tested on python 3.9 yet. 
+The minimum supported python version is 3.6. 
+| Python version | Supported  |
+|:--------------:|:----------:|
+| 2.x            | NO         |
+| 3.1-3.5        | NO         |
+| 3.6            | YES        |
+| 3.7            | YES        |
+| 3.8            | YES        |
+| 3.9            | YES        |
+| 3.10           | YES        |
+| 3.11           | NOT TESTED |
 
 
 ## Install 
