@@ -50,3 +50,5 @@ pip-log.txt
 *.a
 
 
+.eggs/README.txt
+.vscode/settings.json

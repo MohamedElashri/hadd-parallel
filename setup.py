@@ -3,7 +3,6 @@
 import re
 from setuptools import setup
 
-
 # Get the version number from __init__.py
 
 version = re.search(
@@ -17,7 +16,7 @@ version = re.search(
 
 try:
      import pypandoc
-     long_description = pypandoc.convert("README.md", "rst")
+     long_description = pypandoc.convert_file("README.md", "rst")
 except ImportError:
     long_description = ""
          
@@ -50,6 +49,9 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Scientific/Engineering :: Physics",
     ],
     keywords=[

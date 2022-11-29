@@ -14,7 +14,7 @@ import logging
 import argparse
 
 
-__version__ = "1.2"
+__version__ = "1.3"
 
 @unique
 class EXIT(IntEnum):
