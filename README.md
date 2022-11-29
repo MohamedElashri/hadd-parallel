@@ -1,6 +1,7 @@
 [![Python Tests](https://github.com/MohamedElashri/hadd-parallel/actions/workflows/python-test.yml/badge.svg)](https://github.com/MohamedElashri/hadd-parallel/actions/workflows/python-test.yml)
 
 # Parallel Hadd
+
 This is a python package to allow usage of hadd (from ROOT CERN) in parallel. It allows adding histogram and `.root` files. The addition will occur in blocks instead of one at all. It was designed to work with limited memory (local development primilary). The addition will use `multiprocessing` if avilable in your python enviroment. 
 
 ## Requirements:
@@ -14,7 +15,7 @@ The minimum supported python version is 3.6.
 | 3.8            | YES        |
 | 3.9            | YES        |
 | 3.10           | YES        |
-| 3.11           | NOT TESTED |
+| 3.11           | YES       |
 
 
 ## Install 
