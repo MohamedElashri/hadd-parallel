@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import glob
 import os
 import signal
 import stat
@@ -95,19 +94,19 @@ class TestCli:
         bin_dir = tmp_path / "bin"
         bin_dir.mkdir()
         script = bin_dir / "hadd"
-        # Record every invocation, then behave like the normal fake hadd.
+        log_file = tmp_path / "hadd.log"
+        # Record every invocation (log path baked into the script so it does
+        # not depend on environment inheritance), then behave like fake hadd.
         script.write_text(
             "#!/usr/bin/env python3\n"
-            "import os, sys\n"
-            "with open(os.environ['HADD_LOG'], 'a') as log:\n"
+            "import sys\n"
+            f"with open({str(log_file)!r}, 'a') as log:\n"
             "    log.write('\\x1f'.join(sys.argv[1:]) + '\\n')\n"
             "positional = [a for a in sys.argv[1:] if not a.startswith('-')]\n"
             "with open(positional[0], 'w') as f:\n"
             "    f.write('\\n'.join(sorted(positional[1:])))\n"
         )
         script.chmod(script.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-        log_file = tmp_path / "hadd.log"
-        monkeypatch.setenv("HADD_LOG", str(log_file))
         monkeypatch.setenv("PATH", str(bin_dir) + os.pathsep + os.environ["PATH"])
 
         files = make_root_files(tmp_path / "in", 4)
@@ -129,9 +128,14 @@ class TestCli:
         script.chmod(script.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
         files = make_root_files(tmp_path / "in", 6)
         env = {**os.environ, "PATH": str(bin_dir) + os.pathsep + os.environ["PATH"]}
+        # Scope intermediates to a known directory (portable across platforms).
+        work_dir = tmp_path / "work"
+        work_dir.mkdir()
 
-        # Only react to temp dirs created by *this* run.
-        before = set(glob.glob("/tmp/phadd_*"))
+        def temp_dirs():
+            return set(work_dir.glob("phadd_*"))
+
+        before = temp_dirs()
         proc = subprocess.Popen(
             [
                 sys.executable,
@@ -141,6 +145,8 @@ class TestCli:
                 "2",
                 "-n",
                 "2",
+                "-t",
+                str(work_dir),
                 str(tmp_path / "out.root"),
                 *map(str, files),
             ],
@@ -154,7 +160,7 @@ class TestCli:
         deadline = time.monotonic() + 30
         started = False
         while time.monotonic() < deadline:
-            if set(glob.glob("/tmp/phadd_*")) - before:
+            if temp_dirs() - before:
                 started = True
                 break
             if proc.poll() is not None:
@@ -173,7 +179,7 @@ class TestCli:
         err = proc.stderr.read()
         if proc.returncode != 128 + int(signal.SIGTERM):
             pytest.fail(f"unexpected rc={proc.returncode}; stderr:\n{err}")
-        assert set(glob.glob("/tmp/phadd_*")) == before, "temp dirs leaked"
+        assert temp_dirs() == before, "temp dirs leaked"
 
         # The sleeping stub hadd processes must have been killed too (no orphans).
         if os.name == "posix":

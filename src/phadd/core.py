@@ -5,6 +5,7 @@ from __future__ import annotations
 import contextlib
 import logging
 import math
+import multiprocessing
 import os
 import shutil
 import signal
@@ -237,7 +238,11 @@ class ParallelHadd:
     ) -> list[Path]:
         """Merge chunks across a process pool, returning destinations in order."""
         jobs = min(self.jobs, len(chunks))
-        with ProcessPoolExecutor(max_workers=jobs, initializer=_worker_init) as pool:
+        # Fork deliberately: workers must inherit the live environment (PATH
+        # etc.). Python 3.14 switched Linux's default to forkserver, whose
+        # workers fork from a stale server snapshot instead.
+        mp_context = multiprocessing.get_context("fork") if os.name == "posix" else None
+        with ProcessPoolExecutor(max_workers=jobs, initializer=_worker_init, mp_context=mp_context) as pool:
             futures = {
                 pool.submit(
                     _merge_chunk,
