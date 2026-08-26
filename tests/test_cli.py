@@ -30,7 +30,7 @@ class TestCli:
 
         assert code == ExitCode.MISSING_HADD
 
-    def test_single_input_is_copied(self, tmp_path, make_root_files):
+    def test_single_input_is_copied(self, tmp_path, fake_hadd, make_root_files):
         files = make_root_files(tmp_path / "in", 1)
         out = tmp_path / "out.root"
 
@@ -39,14 +39,14 @@ class TestCli:
         assert code == ExitCode.OK
         assert out.is_file()
 
-    def test_output_same_as_single_input_fails(self, tmp_path, make_root_files):
+    def test_output_same_as_single_input_fails(self, tmp_path, fake_hadd, make_root_files):
         files = make_root_files(tmp_path / "in", 1)
 
         code = main([str(files[0]), str(files[0])])
 
         assert code == ExitCode.ERROR
 
-    def test_missing_single_input_fails(self, tmp_path, make_root_files):
+    def test_missing_single_input_fails(self, tmp_path, fake_hadd):
         code = main([str(tmp_path / "out.root"), str(tmp_path / "nope.root")])
         assert code == ExitCode.ERROR
 
