@@ -52,3 +52,10 @@ pip-log.txt
 
 .eggs/README.txt
 .vscode/settings.json
+
+# tooling caches & coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.ruff_cache/
+.venv/
