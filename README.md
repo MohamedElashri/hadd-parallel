@@ -1,4 +1,6 @@
 [![CI](https://github.com/MohamedElashri/hadd-parallel/actions/workflows/ci.yml/badge.svg)](https://github.com/MohamedElashri/hadd-parallel/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/parallel-hadd)](https://pypi.org/project/parallel-hadd/)
+[![Python](https://img.shields.io/pypi/pyversions/parallel-hadd)](https://pypi.org/project/parallel-hadd/)
 
 # Parallel HAdd (`phadd`)
 
